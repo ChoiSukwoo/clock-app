@@ -20,9 +20,9 @@ const useResize = () => {
     device: 'web'
   });
 
-  const setWindowHeight = () =>{
-    let vh = window.innerHeight *0.01
-    document.documentElement.style.setProperty('--vh',vh+'px')
+  const setWindowHeight = () => {
+    let vh = window.innerHeight * 0.01
+    document.documentElement.style.setProperty('--vh', vh + 'px')
   }
 
   const setDevice = () => {
@@ -46,18 +46,18 @@ const useResize = () => {
 
   useEffect(() => {
 
-    if(window){
+    if (window) {
       setDevice()
       setWindowHeight()
 
-      window.addEventListener("resize", ()=>{
+      window.addEventListener("resize", () => {
         setDevice()
         setWindowHeight()
       });
     }
 
     return () => {
-      window.removeEventListener("resize", ()=>{
+      window.removeEventListener("resize", () => {
         setDevice()
         setWindowHeight()
       });
@@ -67,26 +67,26 @@ const useResize = () => {
   return state.device;
 };
 
-const useRegion = () =>{
-  
+const useRegion = () => {
+
   const [regionInfo, setRegionInfo] = useState({
     countryCode: "none",
-    countryName : "none",
+    countryName: "none",
   });
 
-  const setRegion = (regionInfo) =>{
-    console.log("지역정보 : ",regionInfo)
+  const setRegion = (regionInfo) => {
+    console.log("지역정보 : ", regionInfo)
     setRegionInfo({
-      countryCode : regionInfo.country_code,
-      countryName : regionInfo.country_name,
+      countryCode: regionInfo.country_code,
+      countryName: regionInfo.country_name,
     })
   }
 
 
-  return(
+  return (
     {
-      SetRegion : setRegion,
-      countryCode : regionInfo.countryCode,
+      SetRegion: setRegion,
+      countryCode: regionInfo.countryCode,
       countryName: regionInfo.countryName
     }
   )
@@ -98,13 +98,13 @@ const useTime = () => {
 
   const [timeInfo, setTimeInfo] = useState({
     timeZone: "none",
-    dayOfWeek : 0,
-    dayOfYear : 0,
-    weekNumber : 0,
-    abbreviation : "none"
+    dayOfWeek: 0,
+    dayOfYear: 0,
+    weekNumber: 0,
+    abbreviation: "none"
   });
 
-  const setTime = (timeInfo) =>{
+  const setTime = (timeInfo) => {
 
     let hours = new Date(timeInfo['datetime']).getHours()
 
@@ -115,19 +115,19 @@ const useTime = () => {
     }
 
     setTimeInfo({
-      isNight:isNight,
-      timeZone:timeInfo.timezone,
-      dayOfWeek:timeInfo.day_of_week,
-      dayOfYear:timeInfo.day_of_year,
-      weekNumber:timeInfo.week_number,
-      abbreviation:timeInfo.abbreviation
+      isNight: isNight,
+      timeZone: timeInfo.timezone,
+      dayOfWeek: timeInfo.day_of_week,
+      dayOfYear: timeInfo.day_of_year,
+      weekNumber: timeInfo.week_number,
+      abbreviation: timeInfo.abbreviation
     })
   }
 
-  return(
+  return (
     {
-    SetTime : setTime,
-    Timezone:timeInfo.timeZone
+      SetTime: setTime,
+      Timezone: timeInfo.timeZone
     }
   )
 }
@@ -146,6 +146,7 @@ function App() {
   const region = useRegion()
   const time = useTime()
 
+  let timer = null;
 
   const [isLoading, setIsLoading] = useState(true)
 
@@ -155,36 +156,40 @@ function App() {
       `https://api.freegeoip.app/json/?apikey=8d6814b0-4ae3-11ec-ac38-13d6984d8b0f`
     )
     region.SetRegion(data)
-    getTime(data['ip'])
-  }
+    timer = setInterval(() => { //timer 라는 변수에 인터벌 종료를 위해 저장  
+      getTime(data['ip']); // 현재 시간 세팅 
+    }, 1000); //1000ms = 1s 간 반복   }
 
-  const getTime = async (ip) => {
-    const { data } = await axios.get(
-      `http://worldtimeapi.org/api/ip=${ip}`
-    )
-    time.SetTime(data)
+    const getTime = async (ip) => {
+      const { data } = await axios.get(
+        `http://worldtimeapi.org/api/ip=${ip}`
+      )
+      time.SetTime(data)
 
-    setIsLoading(false)
+      setIsLoading(false)
+    }
   }
 
   useEffect(() => {
-    console.log("랜더링",isLoading)
-    getIp()
+    console.log("랜더링", isLoading)
+
+    getIp(); // 현재 시간 세팅 
+    return () => {
+      clearInterval(timer); // 함수 언마운트시 clearInterval 
+    };
   }, [isLoading])
-
-
 
   let Background
 
   switch (device) {
     case "web":
-      Background =  time.isNight == 'night' ? DesktopNight : DesktopDay
+      Background = time.isNight == 'night' ? DesktopNight : DesktopDay
       break;
     case "tablet":
-      Background =  time.isNight == 'night' ? TabletNight : TabletDay
+      Background = time.isNight == 'night' ? TabletNight : TabletDay
       break;
     case "mobile":
-      Background =  time.isNight == 'night' ? MobileNight : MobileDay
+      Background = time.isNight == 'night' ? MobileNight : MobileDay
       break
   }
 
@@ -193,7 +198,7 @@ function App() {
     <AppLaycout Background={Background} >
       <div>"The science of operations, as derived from mathematics more especially, is a science of itself, and has its own abstract truth and value."</div>
       <div className="H5font">Ada Lovelace</div>
-      {region.countryCode}   
+      {region.countryCode}
     </AppLaycout>
   );
 }
