@@ -1,8 +1,12 @@
 import { useState, useEffect } from 'react';
 import styled from "styled-components";
+import * as moment from 'moment';
 import axios from "axios"
 
 import './App.css';
+import MobileLayout from './Layout/Mobile/MobileLayout'
+import TabletLayout from './Layout/Tablet/TabletLayout'
+import WebLayout from './Layout/Web/WebLayout'
 
 import DesktopNight from './assets/desktop/bg-image-nighttime.jpg'
 import DesktopDay from './assets/desktop/bg-image-daytime.jpg'
@@ -75,7 +79,6 @@ const useRegion = () => {
   });
 
   const setRegion = (regionInfo) => {
-    console.log("지역정보 : ", regionInfo)
     setRegionInfo({
       countryCode: regionInfo.country_code,
       countryName: regionInfo.country_name,
@@ -97,6 +100,7 @@ const useTime = () => {
   const [isNight, setIsNight] = useState('day')
 
   const [timeInfo, setTimeInfo] = useState({
+    datetime: new Date(moment()),
     timeZone: "none",
     dayOfWeek: 0,
     dayOfYear: 0,
@@ -106,9 +110,9 @@ const useTime = () => {
 
   const setTime = (timeInfo) => {
 
-    let hours = new Date(timeInfo['datetime']).getHours()
+    let datetime = new Date(timeInfo['datetime'])
 
-    if (hours < 9 || hours >= 21) {
+    if (datetime.getHours() < 9 || datetime.getHours() >= 21) {
       setIsNight('night')
     } else {
       setIsNight('day')
@@ -116,6 +120,7 @@ const useTime = () => {
 
     setTimeInfo({
       isNight: isNight,
+      datetime:datetime,
       timeZone: timeInfo.timezone,
       dayOfWeek: timeInfo.day_of_week,
       dayOfYear: timeInfo.day_of_year,
@@ -124,48 +129,51 @@ const useTime = () => {
     })
   }
 
-  return (
-    {
-      SetTime: setTime,
-      Timezone: timeInfo.timeZone
-    }
-  )
+  return ({
+    SetTime: setTime,
+    datetime: ('0'+timeInfo.datetime.getHours()).slice(-2)+":"+('0'+timeInfo.datetime.getMinutes()).slice(-2),
+    isNight: timeInfo.isNight,
+    timeZone: timeInfo.timezone,
+    dayOfWeek: timeInfo.day_of_week,
+    dayOfYear: timeInfo.day_of_year,
+    weekNumber: timeInfo.week_number,
+    abbreviation: timeInfo.abbreviation    
+  })
 }
 
+const useIsMore = () =>{
+  const [isMore, setIsMore] = useState(false)
 
-const AppLaycout = styled.div`
-  background-image: url(${props => props.Background});
-  background-repeat:no-repeat;
-  background-size:100% 100%;
-  width:100%; height:100%;
-`
+  return({
+    isMore:isMore,
+    setIsMore:setIsMore
+  })
+}
 
 function App() {
 
   const device = useResize()
   const region = useRegion()
   const time = useTime()
+  const isMore = useIsMore()
 
   let timer = null;
 
   const [isLoading, setIsLoading] = useState(true)
 
 
+
   const getIp = async () => {
-    const { data } = await axios.get(
-      `https://api.freegeoip.app/json/?apikey=8d6814b0-4ae3-11ec-ac38-13d6984d8b0f`
-    )
+    const { data } = await axios.get(`https://api.freegeoip.app/json/?apikey=8d6814b0-4ae3-11ec-ac38-13d6984d8b0f`)
     region.SetRegion(data)
     timer = setInterval(() => { //timer 라는 변수에 인터벌 종료를 위해 저장  
       getTime(data['ip']); // 현재 시간 세팅 
     }, 1000); //1000ms = 1s 간 반복   }
 
     const getTime = async (ip) => {
-      const { data } = await axios.get(
-        `http://worldtimeapi.org/api/ip=${ip}`
-      )
+      const { data } = await axios.get(`http://worldtimeapi.org/api/ip=${ip}`)
       time.SetTime(data)
-
+      console.log("타임 : ",data)
       setIsLoading(false)
     }
   }
@@ -180,26 +188,27 @@ function App() {
   }, [isLoading])
 
   let Background
+  let Layout
 
   switch (device) {
     case "web":
       Background = time.isNight == 'night' ? DesktopNight : DesktopDay
+      Layout = WebLayout
       break;
     case "tablet":
       Background = time.isNight == 'night' ? TabletNight : TabletDay
+      Layout = TabletLayout
       break;
     case "mobile":
       Background = time.isNight == 'night' ? MobileNight : MobileDay
+      Layout = MobileLayout
       break
   }
 
 
+
   return (
-    <AppLaycout Background={Background} >
-      <div>"The science of operations, as derived from mathematics more especially, is a science of itself, and has its own abstract truth and value."</div>
-      <div className="H5font">Ada Lovelace</div>
-      {region.countryCode}
-    </AppLaycout>
+    <Layout Background={Background} Region={region} Time={time} IsMore={isMore} ></Layout>
   );
 }
 

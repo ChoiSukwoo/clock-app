@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&display=swap');
 
 
 html,body,#root{
@@ -61,7 +61,7 @@ a:hover { color: inherit; text-decoration: underline;}
 }
 
 .H3font{
-  font-weight: 500; font-size: 24px; line-height: 28; letter-spacing: -4.8px; text-transform: uppercase;
+  font-weight: 500; font-size: 24px; line-height: 28px; letter-spacing: 4.8px; text-transform: uppercase;
 }
 
 .H4font{
