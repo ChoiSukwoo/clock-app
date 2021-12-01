@@ -1,8 +1,8 @@
 {
   "files": {
     "main.css": "/clock-app/static/css/main.9e61e8d1.chunk.css",
-    "main.js": "/clock-app/static/js/main.7b4a28a3.chunk.js",
-    "main.js.map": "/clock-app/static/js/main.7b4a28a3.chunk.js.map",
+    "main.js": "/clock-app/static/js/main.b4cc4e36.chunk.js",
+    "main.js.map": "/clock-app/static/js/main.b4cc4e36.chunk.js.map",
     "runtime-main.js": "/clock-app/static/js/runtime-main.c7a97ca3.js",
     "runtime-main.js.map": "/clock-app/static/js/runtime-main.c7a97ca3.js.map",
     "static/js/2.e239b9e7.chunk.js": "/clock-app/static/js/2.e239b9e7.chunk.js",
@@ -25,6 +25,6 @@
     "static/js/runtime-main.c7a97ca3.js",
     "static/js/2.e239b9e7.chunk.js",
     "static/css/main.9e61e8d1.chunk.css",
-    "static/js/main.7b4a28a3.chunk.js"
+    "static/js/main.b4cc4e36.chunk.js"
   ]
 }
