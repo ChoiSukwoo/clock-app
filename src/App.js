@@ -1,4 +1,6 @@
 import { useState, useEffect } from 'react';
+import styled from "styled-components";
+
 import * as moment from 'moment';
 import axios from "axios"
 
@@ -114,7 +116,7 @@ const useTime = () => {
     if (datetime.getHours() < 9 || datetime.getHours() >= 21) {
       setIsNight('night')
     } else {
-      setIsNight('day')
+      setIsNight('night')
     }
 
     setTimeInfo({
@@ -147,6 +149,18 @@ const useIsMore = () =>{
     setIsMore:setIsMore
   })
 }
+
+const BackgroundCover = styled.div`
+    width: 100%;  height: 100%;
+    background-image: url(${props => props.background});
+    background-repeat:no-repeat;
+    background-size:100% 100%;
+`
+
+const FillterCover = styled.div`
+    width: 100%;  height: 100%;
+    background-color: rgba(0,0,0,0.4);
+`
 
 function App() {
 
@@ -204,7 +218,11 @@ function App() {
   }
 
   return (
-    <Layout Background={Background} Region={region} Time={time} IsMore={isMore} ></Layout>
+    <BackgroundCover background={Background}>
+      <FillterCover>
+        <Layout Region={region} Time={time} IsMore={isMore} ></Layout>
+      </FillterCover>
+    </BackgroundCover>
   );
 }
 
