@@ -154,7 +154,7 @@ const BackgroundCover = styled.div`
     width: 100%;  height: 100%;
     background-image: url(${props => props.background});
     background-repeat:no-repeat;
-    background-size:100% 100%;
+    background-size:cover;
 `
 
 const FillterCover = styled.div`
