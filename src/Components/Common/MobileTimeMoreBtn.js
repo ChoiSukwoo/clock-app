@@ -3,15 +3,15 @@ import { ReactComponent as ArrowUp } from "../../assets/icon-arrow-up.svg"
 import { ReactComponent as ArrowDown } from "../../assets/icon-arrow-down.svg"
 
 const ReturnButton = styled.div`
-    display: flex; align-items: center; justify-content: flex-end; column-gap: 14px;
-    width: 146px;   height: 56px;   padding-right: 9px;
+    display: flex; align-items: center; justify-content: flex-end; column-gap: 16px;
+    width: 115px;   height: 39px;   padding-right: 4px;
     background-color: #fff; border-radius: 999px;
-    color: rgba(0,0,0,0.5); font-size: 16px; font-weight: 500; line-height: 28px; letter-spacing: 5px;
+    color: rgba(0,0,0,0.5); font-size: 12px; font-weight: 500; line-height: 14px; letter-spacing: 3.75px;
     cursor: pointer;
 `
 
 const Circle = styled.div`
-    width: 40px; height: 40px; 
+    width: 32px; height: 32px; 
     transition-duration: 1s;
     background-color: ${props=>props.color};  border-radius: 50%;
 `

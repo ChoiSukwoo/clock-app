@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import styled from "styled-components";
 import * as moment from 'moment';
 import axios from "axios"
 
@@ -33,7 +32,7 @@ const useResize = () => {
 
     let nowDevice = 'mobile'
 
-    if (window.innerWidth <= 768) {
+    if (window.innerWidth <= 767) {
       nowDevice = 'mobile'
     } else if (window.innerWidth <= 1023) {
       nowDevice = 'tablet'
@@ -119,7 +118,6 @@ const useTime = () => {
     }
 
     setTimeInfo({
-      isNight: isNight,
       datetime:datetime,
       timeZone: timeInfo.timezone,
       dayOfWeek: timeInfo.day_of_week,
@@ -132,11 +130,11 @@ const useTime = () => {
   return ({
     SetTime: setTime,
     datetime: ('0'+timeInfo.datetime.getHours()).slice(-2)+":"+('0'+timeInfo.datetime.getMinutes()).slice(-2),
-    isNight: timeInfo.isNight,
-    timeZone: timeInfo.timezone,
-    dayOfWeek: timeInfo.day_of_week,
-    dayOfYear: timeInfo.day_of_year,
-    weekNumber: timeInfo.week_number,
+    isNight: isNight,
+    timeZone: timeInfo.timeZone,
+    dayOfWeek: timeInfo.dayOfWeek,
+    dayOfYear: timeInfo.dayOfYear,
+    weekNumber: timeInfo.weekNumber,
     abbreviation: timeInfo.abbreviation    
   })
 }
@@ -204,8 +202,6 @@ function App() {
       Layout = MobileLayout
       break
   }
-
-
 
   return (
     <Layout Background={Background} Region={region} Time={time} IsMore={isMore} ></Layout>
