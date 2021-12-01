@@ -12,16 +12,26 @@ const Layout = styled.div`
 
 const TimeContent = styled.div`
     display: flex;  align-items:flex-end;  column-gap: 11px;
-    margin-bottom: 16px;
 `
+
+const TimeContentContent = styled.div`
+    font-weight: 500; font-size: 175px; line-height: 1; letter-spacing: -4.38px;
+`
+
 const TimeAbbreviation = styled.div`
-    margin-bottom: 27px;
-    font-weight: 300;   font-size: 40px;
+    margin-bottom: 24px;
+    font-weight: 300;   font-size: 32px;
 `
+
+const RegionContent = styled.div`
+        font-weight: 500; font-size: 18px; line-height: 28px; letter-spacing: 3.6px; text-transform: uppercase;
+`
+
 
 const CommentContent = styled.div`
     display: flex; column-gap: 16px; align-items: center;
     margin-bottom: 16px;
+    font-weight: 400; font-size: 18px; line-height: 28px; letter-spacing: 3.6px;
 `
 
 
@@ -35,13 +45,13 @@ function ShowTimeComponent({ Region, Time ,IsMore }) {
             <div>
                 <CommentContent>
                     {icon}
-                    <div className="H4font">{comment}, IT’S CURRENTLY</div>
+                    <div>{comment}, IT’S CURRENTLY</div>
                 </CommentContent>
                 <TimeContent>
-                    <div className="H1font">{Time.datetime}</div>
+                    <TimeContentContent>{Time.datetime}</TimeContentContent>
                     <TimeAbbreviation>{Time.abbreviation}</TimeAbbreviation>
                 </TimeContent>
-                <div className="H3font">in {Region.countryName}, {Region.countryCode}</div>
+                <RegionContent className="H3font">in {Region.countryName}, {Region.countryCode}</RegionContent>
             </div>
             <TimeMoreBtn IsMore={IsMore} />
         </Layout>

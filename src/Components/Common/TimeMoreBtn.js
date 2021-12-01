@@ -12,21 +12,22 @@ const ReturnButton = styled.div`
 
 const Circle = styled.div`
     width: 40px; height: 40px; 
-    transition-duration: 1s;
-    background-color: ${props=>props.color};  border-radius: 50%;
+    transition-duration: 1s; transform: rotate( ${props=>props.style.rotation} );
+    background-color: ${props=>props.style.color};  border-radius: 50%;
 `
+
 
 function TimeMoreBtn({ IsMore }) {
 
     const event = IsMore.isMore == false ? true : false
     const text = IsMore.isMore == false ? "MORE" : "LESS"
-    const circle = IsMore.isMore == false ? <Circle className="center" color="#999"><ArrowDown/></Circle> : <Circle className="center" color="#303030"><ArrowUp/></Circle>
+    const circleStyle = IsMore.isMore == false ? {color:"#999", rotation:"0deg"} : {color:"#303030", rotation:"180deg"}
 
 
     return (
         <ReturnButton onClick={() => IsMore.setIsMore(event)}>
             {text}
-            {circle}
+            <Circle className="center" style={circleStyle}><ArrowUp/></Circle>
         </ReturnButton>
     )
 }
