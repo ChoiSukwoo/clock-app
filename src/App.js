@@ -116,7 +116,7 @@ const useTime = () => {
     if (datetime.getHours() < 9 || datetime.getHours() >= 21) {
       setIsNight('night')
     } else {
-      setIsNight('night')
+      setIsNight('day')
     }
 
     setTimeInfo({
